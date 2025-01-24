@@ -4,24 +4,20 @@ on:
   push:
 
 jobs:
-  test_job:
-    runs-on: ${{ matrix.os }}
+  example-10-miniforge:
+    name: Ex10 (${{ matrix.os }}, Miniforge)
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [windows-latest] # ubuntu-latest, macos-latest,
-        pythonVersion: [3.6, 3.7, 3.8]
-        exclude:
-          # - os: macos-latest
-          #   pythonVersion: 3.8
-          - os: windows-latest
-            pythonVersion: 3.6
+        os: ["windows"] # "ubuntu", "macos", 
     steps:
-    - uses: actions/checkout@v2
-    - name: Anaconda-Action
-      id: step1
-      uses: fdiblen/anaconda-action@0.1.7
-      with:
-        envFileName: 'test_windows_env.yml'
-    - name: Run Tests with pytest
-      run: conda activate myenv  # Activate your conda environment
-           pytest
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: etc/example-environment.yml
+          miniforge-version: latest
+          activate-environment: myenv  # Activates the environment automatically
+      - name: Run Tests with pytest
+        shell: bash
+        run: |
+          pytest
