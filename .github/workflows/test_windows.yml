@@ -5,18 +5,15 @@ on:
 
 jobs:
   example-10-miniforge:
-    name: Ex10 (${{ matrix.os }}, Miniforge)
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      matrix:
-        os: ["windows"] # "ubuntu", "macos",
+    name: Ex10 (Windows, Miniforge)
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: conda-incubator/setup-miniconda@v3
         with:
           environment-file: test_windows_env.yml
           miniforge-version: latest
-          activate-environment: myenv  # Activates the environment automatically
+          activate-environment: myenv_qgis
       - name: Run Tests with pytest
         shell: bash
         run: |
